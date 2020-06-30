@@ -37,6 +37,19 @@ def validateEnd(rStart):
             maxLoop = True
             return rEnd
 
+#method to ensure comparisons for increment/decrement amount take signs into account, boolean true = inc, false = dec
+def checkSign(start, end, sign):
+    if sign:
+        if end > 0 and start > 0:
+            return end - start
+        else:
+            return end + start
+    else:
+        if start > 0 and end > 0:
+            return start - end
+        else:
+            return start + end        
+
 #method to validate the increment value and modify the output according to the value of the direction boolean
 def validateInc(dir):
     incLoop = True
@@ -46,12 +59,16 @@ def validateInc(dir):
             inc = validateNum("Choose increment amount: ")
             if inc <= 0:
                 print("Please choose a positive number.")
+            elif inc >= checkSign(rangeStart, rangeEnd, True):
+                print("Please choose a number within the bounds of the specified range.")
             else:
                 return inc
         else:
             inc = validateNum("Choose decrement amount: ")
             if inc >= 0:
                 print("Please choose a negative number.")
+            elif inc <= checkSign(rangeStart, rangeEnd, False):
+                print("Please choose a number within the bounds of the specified range.")
             else:
                 return inc
 
@@ -78,7 +95,6 @@ print("Welcome to the FizzBuzzer. Traditionally FizzBuzz is played by counting u
 "across a defined range. Let's begin...")
 
 #initialise empty list and ask for all necessary string inputs
-#TODO: choose whether you increment up or down first and add appropriate validation to rangeStart, rangeEnd and increment
 resultList = []
 #direction boolean - true = count up, false = count down
 direction = True
@@ -87,7 +103,6 @@ rangeStart = validateNum("Choose start number in range: ")
 rangeEnd = validateEnd(rangeStart)
 firstWord = input("Choose first word: ")
 secondWord = input("Choose second word: ")
-print (direction)
 #increment/decrement and validation
 incAmount = validateInc(direction)
 firstNum = validateNum("Choose first divisor: ")
